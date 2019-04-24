@@ -1,9 +1,8 @@
 ---
-filebeat_version: 6.x
 filebeat_create_config: true
-
-filebeat_prospectors:
-  - input_type: log
+filebeat_version: 6.x
+inputs:
+  - type: log
     paths:
       - "/var/log/*.log"
 
@@ -21,6 +20,12 @@ filebeat_log_dir: /var/log/mybeat
 filebeat_log_filename: mybeat.log
 
 filebeat_ssl_dir: /etc/pki/logstash
-filebeat_ssl_certificate_file: ""
-filebeat_ssl_key_file: ""
+filebeat_ssl_certificate: false
+filebeat_ssl_key: false
 filebeat_ssl_insecure: "false"
+filebeat_enable_multiline: "true"
+
+
+filebeat_ssl_enabled: 'false'
+filebeat_ssl_certificate_authorities: false
+filebeat_ssl_verification_mode: none

@@ -8,11 +8,28 @@
 - name: Install Filebeat.
   package: name=filebeat state=present
 
+- name: Copy initscript
+  copy:
+    src: "etc/init.d/filebeat"
+    dest: "/etc/init.d/filebeat"
+    mode: 0755
+  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart'
+
 - include: config.yml
   when: filebeat_create_config
+
+- name: ensure service starts up on boot
+  sysvinit:
+    name: filebeat
+    state: started
+    enabled: yes
+    runlevels:
+      - 3
+      - 5
+  when: ansible_service_mgr == 'sysvinit' or ansible_service_mgr == 'upstart'
 
 - name: Ensure Filebeat is started and enabled at boot.
   service:
     name: filebeat
     state: started
-    enabled: true
+    enabled: yes
